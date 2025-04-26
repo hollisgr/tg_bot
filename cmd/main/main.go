@@ -2,15 +2,22 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 	"os/signal"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	tg_token := ""
+	err := godotenv.Load("cfg.env")
+	if err != nil {
+		log.Fatal("cfg.env not loaded")
+	}
+
+	tgToken := os.Getenv("TELEGRAM_BOT_TOKEN")
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
@@ -19,7 +26,7 @@ func main() {
 		bot.WithDefaultHandler(handler),
 	}
 
-	b, err := bot.New(tg_token, opts...)
+	b, err := bot.New(tgToken, opts...)
 	if err != nil {
 		panic(err)
 	}

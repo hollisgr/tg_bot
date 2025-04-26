@@ -1,6 +1,8 @@
 APP := cmd/main/main.go
-TGBOT := github.com/go-telegram/bot
 OUTPUT := app
+
+TGBOT := github.com/go-telegram/bot
+GODOTENV := github.com/joho/godotenv
 
 all: clean build run
 
@@ -15,6 +17,7 @@ mod:
 
 get:
 	go get $(TGBOT)
+	go get $(GODOTENV)
 
 clean:
 	rm -rf $(OUTPUT)
