@@ -63,7 +63,7 @@ func GetUserById(ctx context.Context, b *bot.Bot, update *models.Update) {
 	id := 0
 	fmt.Sscanf(body, "/get_user %d", &id)
 
-	getUrl := fmt.Sprintf("%s/users%d", API_URL, id)
+	getUrl := fmt.Sprintf("%s/users/%d", API_URL, id)
 
 	resp, err := http.Get(getUrl)
 
@@ -125,7 +125,7 @@ func DeleteUserById(ctx context.Context, b *bot.Bot, update *models.Update) {
 	id := 0
 	fmt.Sscanf(body, "/delete_user %d", &id)
 
-	delUrl := fmt.Sprintf("%s/users%d", API_URL, id)
+	delUrl := fmt.Sprintf("%s/users/%d", API_URL, id)
 
 	req, err := http.NewRequest(http.MethodDelete, delUrl, nil)
 
