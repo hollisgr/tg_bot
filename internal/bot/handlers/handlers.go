@@ -13,6 +13,8 @@ import (
 	"github.com/go-telegram/bot/models"
 )
 
+var API_URL string
+
 func Register(b *bot.Bot) {
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/get_user ", bot.MatchTypePrefix, GetUserById)
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/get_userlist", bot.MatchTypeExact, GetUserList)
@@ -34,7 +36,8 @@ func Help(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 func GetUserList(ctx context.Context, b *bot.Bot, update *models.Update) {
 
-	resp, err := http.Get("http://127.0.0.1:8080/users")
+	respURL := API_URL + "/users"
+	resp, err := http.Get(respURL)
 
 	if err != nil {
 		fmt.Println(err)
@@ -60,7 +63,7 @@ func GetUserById(ctx context.Context, b *bot.Bot, update *models.Update) {
 	id := 0
 	fmt.Sscanf(body, "/get_user %d", &id)
 
-	getUrl := fmt.Sprintf("http://127.0.0.1:8080/users/%d", id)
+	getUrl := fmt.Sprintf("%s/users%d", API_URL, id)
 
 	resp, err := http.Get(getUrl)
 
@@ -95,8 +98,8 @@ func CreateUser(ctx context.Context, b *bot.Bot, update *models.Update) {
 	}
 
 	reqBody, _ := json.Marshal(newUser)
-
-	resp, err := http.Post("http://127.0.0.1:8080/users", "json", bytes.NewReader(reqBody))
+	respURL := API_URL + "/users"
+	resp, err := http.Post(respURL, "json", bytes.NewReader(reqBody))
 
 	if err != nil {
 		fmt.Println(err)
@@ -122,7 +125,7 @@ func DeleteUserById(ctx context.Context, b *bot.Bot, update *models.Update) {
 	id := 0
 	fmt.Sscanf(body, "/delete_user %d", &id)
 
-	delUrl := fmt.Sprintf("http://127.0.0.1:8080/users/%d", id)
+	delUrl := fmt.Sprintf("%s/users%d", API_URL, id)
 
 	req, err := http.NewRequest(http.MethodDelete, delUrl, nil)
 

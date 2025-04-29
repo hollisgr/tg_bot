@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
 	"tg_bot/internal/bot/handlers"
@@ -22,6 +23,10 @@ func main() {
 	if nil != err {
 		panic(err)
 	}
+
+	handlers.API_URL = fmt.Sprintf("http://%s", cfg.GetURL())
+
+	fmt.Println(handlers.API_URL)
 
 	handlers.Register(b)
 	b.Start(ctx)
